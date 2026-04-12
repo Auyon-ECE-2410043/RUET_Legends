@@ -101,6 +101,149 @@ public:
              << setw(10) << (isBooked ? "Booked" : "Free") << endl;
     }
 };
+class Person
+{
+protected:
+    string name;
+
+public:
+    Person()
+    {
+        name = "";
+    }
+    Person(string n)
+    {
+        name = n;
+    }
+    virtual void displayInfo() const = 0;
+    string getName() const
+    {
+        return name;
+    }
+};
+class Customer : public Person
+{
+private:
+    int custID;
+    int roomNo;
+    int days;
+
+public:
+    static int totalCustomers;
+    Customer() : Person()
+    {
+        custID = 0;
+        roomNo = 0;
+        days = 0;
+    }
+    Customer(int id, string n, int r, int d) : Person(n)
+    {
+        custID = id;
+        roomNo = r;
+        days = d;
+        totalCustomers++;
+    }
+    Customer(const Customer &c) : Person(c.name)
+    {
+        custID = c.custID;
+        roomNo = c.roomNo;
+        days = c.days;
+        totalCustomers++;
+    }
+    ~Customer()
+    {
+        totalCustomers--;
+    }
+    int getRoomNo() const
+    {
+        return roomNo;
+    }
+    int getDays() const
+    {
+        return days;
+    }
+    int getCustID() const
+    {
+        return custID;
+    }
+    friend class Bill;
+    void displayInfo() const override
+    {
+        cout << custID << " | "
+             << name << " | Room: "
+             << roomNo << " | Days: "
+             << days << endl;
+    }
+};
+int Customer::totalCustomers = 0;
+class Bill
+{
+public:
+    float roomBill;
+    float foodBill;
+    float totalBill;
+
+    Bill()
+    {
+        roomBill = 0;
+        foodBill = 0;
+        totalBill = 0;
+    }
+    void calculate(Customer &c, float price, float food)
+    {
+        roomBill = price * c.getDays();
+        foodBill = food;
+        totalBill = roomBill + foodBill;
+    }
+};
+class AdminBase : public Person
+{
+protected:
+    string username;
+    string password;
+
+public:
+    AdminBase() : Person()
+    {
+        username = "admin";
+        password = "1234";
+    }
+
+    virtual bool login(string u, string p)
+    {
+        if (u == username && p == password)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    void displayInfo() const override
+    {
+        cout << "Admin: " << username << endl;
+    }
+    bool authenticate()
+    {
+        string user, pass;
+        int attempts = 3;
+
+        while (attempts--)
+        {
+            cout << "Enter Username: ";
+            cin >> user;
+            cout << "Enter Password: ";
+            cin >> pass;
+
+            if (login(user, pass))
+                return true;
+            cout << "Wrong credentials! Attempts left: " << attempts << endl;
+        }
+        return false;
+    }
+};
 // ---------- MAIN ----------
 int main()
 {
