@@ -65,7 +65,7 @@ float safeFloat(const string &prompt = "")
     }
 }
 
-// ---------- TEMPLATE ----------
+// ---------- TEMPLATE ----------//
 template <typename T>
 void displayVector(const vector<T> &v)
 {
@@ -73,7 +73,7 @@ void displayVector(const vector<T> &v)
         item.displayInfo();
 }
 
-// ---------- ROOM ----------
+// ---------- ROOM ----------//
 class Room
 {
 private:
@@ -101,7 +101,7 @@ public:
              << setw(10) << (isBooked ? "Booked" : "Free") << endl;
     }
 };
-// ---------- MAIN ----------
+// ---------- MAIN ----------//
 int main()
 {
     AdminBase admin;
