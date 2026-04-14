@@ -414,9 +414,27 @@ Password : 1234
 
 ## 10. Authors
 
-**[Auyon Dip Sardar]**
+**Auyon Dip Sardar**
 Roll: 2410043
+
 Department of Electrical & Computer Engineering
+
+Rajshahi University of Engineering & Technology (RUET)
+Rajshahi – 6204, Bangladesh
+
+**Nishit Ray**
+Roll: 2410044
+
+Department of Electrical & Computer Engineering
+
+Rajshahi University of Engineering & Technology (RUET)
+Rajshahi – 6204, Bangladesh
+
+**Ahsan Ullah**
+Roll: 2410045
+
+Department of Electrical & Computer Engineering
+
 Rajshahi University of Engineering & Technology (RUET)
 Rajshahi – 6204, Bangladesh
 
