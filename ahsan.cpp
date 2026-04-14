@@ -19,7 +19,7 @@ using namespace std;
 //  A Manager IS-A StaffMember (works shifts, has salary)
 //  Both AdminBase and StaffMember share ONE Person (virtual)
 // ============================================================
-
+// Error Handling
 int safeInt(const string &prompt = "")
 {
     int x;
@@ -71,7 +71,7 @@ float safeFloat(const string &prompt = "")
         }
     }
 }
-
+// Generic Function / Template
 template <typename T>
 void displayVector(const vector<T> &v)
 {
@@ -89,10 +89,19 @@ protected:
     string name;
 
 public:
-    Person() { name = ""; }
-    Person(string n) { name = n; }
-    virtual void displayInfo() const = 0;
-    string getName() const { return name; }
+    Person()
+    {
+        name = "";
+    }
+    Person(string n)
+    {
+        name = n;
+    }
+    virtual void displayInfo() const = 0; // Pure Virtual Function
+    string getName() const
+    {
+        return name;
+    }
 };
 
 // ─────────────────────────────────────────────
@@ -147,11 +156,10 @@ public:
     }
 };
 
-// ─────────────────────────────────────────────
 //  RIGHT BRANCH: StaffMember
 //  A staff member works shifts and earns a salary.
 //  Uses virtual inheritance → shares Person with AdminBase.
-// ─────────────────────────────────────────────
+
 class StaffMember : virtual public Person
 {
 protected:
@@ -181,9 +189,18 @@ public:
              << " | Shift: " << shiftHours << "hrs" << endl;
     }
 
-    string getRole() const { return role; }
-    float getSalary() const { return salary; }
-    int getShift() const { return shiftHours; }
+    string getRole() const
+    {
+        return role;
+    }
+    float getSalary() const
+    {
+        return salary;
+    }
+    int getShift() const
+    {
+        return shiftHours;
+    }
 
     // Staff can take on extra shifts (overtime)
     void addOvertime(int extraHours)
@@ -195,7 +212,6 @@ public:
     }
 };
 
-// ─────────────────────────────────────────────
 //  DIAMOND TIP: Manager
 //
 //  A Manager IS-A AdminBase  → can log in, manage hotel
@@ -249,12 +265,12 @@ public:
         addOvertime(hours); // from StaffMember
     }
 
-    string getDepartment() const { return department; }
+    string getDepartment() const
+    {
+        return department;
+    }
 };
 
-// ─────────────────────────────────────────────
-//  Room & Customer (unchanged logic)
-// ─────────────────────────────────────────────
 class Room
 {
 private:
@@ -264,14 +280,33 @@ private:
     bool isBooked;
 
 public:
-    Room() : roomNo(0), type(""), price(0), isBooked(false) {}
-    Room(int r, string t, float p) : roomNo(r), type(t), price(p), isBooked(false) {}
+    Room() : roomNo(0), type(""), price(0), isBooked(false)
+    {
+    }
+    Room(int r, string t, float p) : roomNo(r), type(t), price(p), isBooked(false)
+    {
+    }
 
-    int getRoomNo() const { return roomNo; }
-    float getPrice() const { return price; }
-    bool getStatus() const { return isBooked; }
-    void book() { isBooked = true; }
-    void free() { isBooked = false; }
+    int getRoomNo() const
+    {
+        return roomNo;
+    }
+    float getPrice() const
+    {
+        return price;
+    }
+    bool getStatus() const
+    {
+        return isBooked;
+    }
+    void book()
+    {
+        isBooked = true;
+    }
+    void free()
+    {
+        isBooked = false;
+    }
 
     void displayInfo() const
     {
@@ -294,7 +329,9 @@ private:
 public:
     static int totalCustomers;
 
-    Customer() : Person(), custID(0), roomNo(0), days(0) {}
+    Customer() : Person(), custID(0), roomNo(0), days(0)
+    {
+    }
     Customer(int id, string n, int r, int d) : Person(n), custID(id), roomNo(r), days(d)
     {
         totalCustomers++;
@@ -305,11 +342,20 @@ public:
     }
     ~Customer() { totalCustomers--; }
 
-    int getRoomNo() const { return roomNo; }
-    int getDays() const { return days; }
-    int getCustID() const { return custID; }
+    int getRoomNo() const
+    {
+        return roomNo;
+    }
+    int getDays() const
+    {
+        return days;
+    }
+    int getCustID() const
+    {
+        return custID;
+    }
 
-    friend class Bill;
+    friend class Bill; // Bill Class is a friend of Customer Class.
 
     void displayInfo() const override
     {
@@ -334,10 +380,9 @@ public:
     }
 };
 
-// ─────────────────────────────────────────────
 //  Hotel — uses composition for customers/rooms
 //          managed by a Manager (diamond class)
-// ─────────────────────────────────────────────
+
 class Hotel
 {
 private:
@@ -346,7 +391,9 @@ private:
     Manager *manager; // Hotel is run by a Manager
 
 public:
-    Hotel(Manager *mgr) : manager(mgr) {}
+    Hotel(Manager *mgr) : manager(mgr)
+    {
+    }
 
     void addRoom()
     {
@@ -369,7 +416,7 @@ public:
                 break;
             cout << "Invalid type! Only 'single' or 'double' allowed.\n";
         }
-        float price = safeFloat("Enter Price: ");
+        float price = safeFloat("Enter Price: "); // Error Handling
         rooms.push_back(Room(no, type, price));
         cout << "Room added successfully!\n";
     }
@@ -380,7 +427,7 @@ public:
              << setw(10) << "Type"
              << setw(10) << "Price"
              << setw(10) << "Status" << endl;
-        displayVector(rooms);
+        displayVector(rooms); // Generic Function or Template Function
     }
 
     void bookRoom()
@@ -388,9 +435,9 @@ public:
         int id;
         while (true)
         {
-            id = safeInt("Enter Customer ID: ");
+            id = safeInt("Enter Customer ID: "); // Error Handling
             bool exists = false;
-            for (const auto &c : customers)
+            for (const auto &c : customers) // Goes through each element in vector customers, without copying it and it doesn't allow any changes.
                 if (c.getCustID() == id)
                 {
                     exists = true;
@@ -404,17 +451,17 @@ public:
 
         string name;
         cout << "Enter Name: ";
-        getline(cin, name);
+        getline(cin, name); // It takes full input (including spaces) from the user and stores it in the variable name
 
-        int roomNo = safeInt("Enter Room No: ");
-        int days = safeInt("Enter Days: ");
+        int roomNo = safeInt("Enter Room No: "); // Error Handling for roomNo
+        int days = safeInt("Enter Days: ");      // Error Handling for days
 
-        for (size_t i = 0; i < rooms.size(); i++)
+        for (size_t i = 0; i < rooms.size(); i++) // Loops through all rooms in the hotel
         {
             if (rooms[i].getRoomNo() == roomNo && !rooms[i].getStatus())
             {
-                rooms[i].book();
-                customers.push_back(Customer(id, name, roomNo, days));
+                rooms[i].book();                                       // Marks the room as booked
+                customers.push_back(Customer(id, name, roomNo, days)); // Adds new customer to the customers vector
                 cout << "Room booked successfully!\n";
                 return;
             }
@@ -436,7 +483,7 @@ public:
                         int days = customers[j].getDays();
                         float food = 1500 * days;
 
-                        Bill b;
+                        Bill b; // Bill is the friend class of Customer class.
                         b.calculate(customers[j], rooms[i].getPrice(), food);
 
                         cout << "\n========== BILL ==========\n";
@@ -464,7 +511,7 @@ public:
             cout << "No customers currently in the hotel.\n";
             return;
         }
-        displayVector(customers);
+        displayVector(customers); // Calling Generic Function
     }
 
     void searchRoom() const
@@ -481,7 +528,10 @@ public:
         cout << "Room not found!\n";
     }
 
-    int getTotalCustomers() const { return customers.size(); }
+    int getTotalCustomers() const
+    {
+        return customers.size();
+    }
 
     void showManagerProfile() const
     {
@@ -514,7 +564,7 @@ public:
             cout << "9. Manager Overtime\n";
             cout << "10. Exit\n";
             cout << "Enter choice: ";
-            choice = safeInt();
+            choice = safeInt(); // Error handling for choice
 
             switch (choice)
             {
@@ -582,7 +632,7 @@ int main()
     cout << "Manager login required.\n\n";
 
     // authenticate() comes from AdminBase path
-    if (!mgr.authenticate())
+    if (!mgr.authenticate()) // it checks if the manager login is successful or not
     {
         cout << "Login Failed! Access denied.\n";
         return 0;
